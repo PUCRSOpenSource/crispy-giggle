@@ -5,8 +5,7 @@ O nó raiz da árvore verifica se o vetor inicial será dividido ou conquistado.
 
 ## Diagrama D&C
 
-
-Figura 1: Funcionamento do modelo de divisão e conquista na ordenação de um único vetor
+![alt text](https://github.com/amarantedaniel/crispy-giggle/blob/master/diagram.gif "Figura 1: Funcionamento do modelo de divisão e conquista na ordenação de um único vetor")
 
 Os itens para avaliação são:
 
