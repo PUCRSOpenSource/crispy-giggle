@@ -30,3 +30,16 @@
 
 # Debug files
 *.dSYM/
+
+#Vim
+
+*.swp
+
+#Latex
+
+*.aux
+*.lof
+*.log
+*.lot
+*.fls
+*.fdb_latexmk
