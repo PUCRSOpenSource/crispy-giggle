@@ -1,0 +1,35 @@
+\documentclass{acm_proc_article-sp}
+
+\usepackage[brazilian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\graphicspath{{figures/}}
+
+\begin{document}
+\makeatletter
+\def\@copyrightspace{\relax}
+\makeatother
+
+\title{Estudo da implementação paralela do quicksort no modelo mestre escravo}
+
+\numberofauthors{2}
+\author{\alignauthor Diego Pinto da Jornada\\
+        \email{pp12804}
+        \alignauthor Daniel Antoniazzi Amarante\\
+        \email{pp12802}
+}
+
+\maketitle
+
+\input{./sections/introducao.tex}
+
+\input{./sections/modelo-solucao.tex}
+
+\input{./sections/avaliacao-desempenho.tex}
+
+\input{./sections/analise-resultados.tex}
+
+\input{./sections/dificuldades-encontradas.tex}
+
+\end{document}
