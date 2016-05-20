@@ -77,7 +77,7 @@ Rotina de Intercalação:
 
 ```c
 /* recebe um ponteiro para um vetor que contem as mensagens recebidas dos filhos e            */
-/* intercala estes valores em um terceiro vetor auxiliar. Devolve um ponteiro para este vetor */          */
+/* intercala estes valores em um terceiro vetor auxiliar. Devolve um ponteiro para este vetor */         
  
 int *interleaving(int vetor[], int tam)
 {
