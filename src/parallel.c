@@ -3,24 +3,23 @@
 
 #define ARRAY_SIZE 40
 
-int *interleaving(int vetor[], int tam) {
-    int *vetor_auxiliar;
+int *interleaving(int array[], int size) {
+    int *aux_array;
     int i1, i2, i_aux;
 
-    vetor_auxiliar = (int *) malloc(sizeof(int) * tam);
+    aux_array = calloc(size, sizeof(int));
 
     i1 = 0;
-    i2 = tam / 2;
+    i2 = size / 2;
 
-    for (i_aux = 0; i_aux < tam; i_aux++) {
-        if (((vetor[i1] <= vetor[i2]) && (i1 < (tam / 2)))
-            || (i2 == tam))
-            vetor_auxiliar[i_aux] = vetor[i1++];
+    for (i_aux = 0; i_aux < size; i_aux++) {
+        if (((array[i1] <= array[i2]) && (i1 < (size / 2))) || (i2 == size))
+            aux_array[i_aux] = array[i1++];
         else
-            vetor_auxiliar[i_aux] = vetor[i2++];
+            aux_array[i_aux] = array[i2++];
     }
 
-    return vetor_auxiliar;
+    return aux_array;
 }
 
 int main() {
@@ -28,20 +27,20 @@ int main() {
     int *vetor2;
     int i;
 
-    for (i = 0; i < ARRAY_SIZE / 2; i++)              /* init array with worst case for sorting */
+    for (i = 0; i < ARRAY_SIZE / 2; i++)
         vetor[i] = i;
-    for (i = ARRAY_SIZE / 2; i < ARRAY_SIZE; i++)              /* init array with worst case for sorting */
+    for (i = ARRAY_SIZE / 2; i < ARRAY_SIZE; i++)
         vetor[i] = i - ARRAY_SIZE / 2;
 
     printf("\nVetor: ");
-    for (i = 0; i < ARRAY_SIZE; i++)              /* print unsorted array */
+    for (i = 0; i < ARRAY_SIZE; i++)
         printf("[%03d] ", vetor[i]);
 
     vetor2 = interleaving(vetor, ARRAY_SIZE);
 
 
     printf("\nVetor: ");
-    for (i = 0; i < ARRAY_SIZE; i++)                              /* print sorted array */
+    for (i = 0; i < ARRAY_SIZE; i++)
         printf("[%03d] ", vetor2[i]);
 
     return 0;
