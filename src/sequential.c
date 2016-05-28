@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "bubblesort.h"
 
 #define DEBUG 1
-#define ARRAY_SIZE 1000000
+#define ARRAY_SIZE 100
 
 
 int main(void)
