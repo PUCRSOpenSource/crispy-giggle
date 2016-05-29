@@ -24,6 +24,18 @@ int *interleaving(int array[], int size) {
 	return aux_array;
 }
 
+int left_child(int index) {
+	return 2 * index + 1;
+}
+
+int right_child(int index) {
+	return 2 * index + 2;
+}
+
+int parent(int index) {
+	return (index - 1) / 2;
+}
+
 int main(int argc, char *argv[]) {
 	int my_rank;
 	int proc_n;
@@ -48,20 +60,20 @@ int main(int argc, char *argv[]) {
 
 		// Send size
 		MPI_Send(&half_size, 1,
-				 MPI_INT, 1, 1,
+				 MPI_INT, right_child(my_rank), 1,
 				 MPI_COMM_WORLD);
 
 		MPI_Send(&half_size, 1,
-				 MPI_INT, 2, 1,
+				 MPI_INT, left_child(my_rank), 1,
 				 MPI_COMM_WORLD);
 
 		// Send array
 		MPI_Send(array, ARRAY_SIZE / 2,
-				 MPI_INT, 1, 1,
+				 MPI_INT, right_child(my_rank), 1,
 				 MPI_COMM_WORLD);
 
 		MPI_Send(array + ARRAY_SIZE / 2, ARRAY_SIZE / 2,
-				 MPI_INT, 2, 1,
+				 MPI_INT, left_child(my_rank), 1,
 				 MPI_COMM_WORLD);
 
 		// Receive response
@@ -85,19 +97,19 @@ int main(int argc, char *argv[]) {
 		int size;
 
 		MPI_Recv(&size, 1,
-				 MPI_INT, 0, MPI_ANY_TAG,
+				 MPI_INT, parent(my_rank), MPI_ANY_TAG,
 				 MPI_COMM_WORLD, &status);
 
 		int *array = calloc(size, sizeof(int));
 
 		MPI_Recv(array, size,
-				 MPI_INT, 0, MPI_ANY_TAG,
+				 MPI_INT, parent(my_rank), MPI_ANY_TAG,
 				 MPI_COMM_WORLD, &status);
 
 		bubble_sort(size, array);
 
 		MPI_Send(array, size,
-				 MPI_INT, 0, 1,
+				 MPI_INT, parent(my_rank), 1,
 				 MPI_COMM_WORLD);
 	}
 
