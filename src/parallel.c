@@ -38,8 +38,8 @@ int parent(int index) {
 	return (index - 1) / 2;
 }
 
-int is_leaf(int total_size, int number_of_process) {
-	return total_size / (number_of_process - 1);
+int is_leaf(int current_size, int total_size, int number_of_process) {
+	return current_size <= (total_size / (number_of_process - 1));
 }
 
 int main(int argc, char *argv[]) {
@@ -112,7 +112,7 @@ int main(int argc, char *argv[]) {
 				 MPI_INT, parent(my_rank), ARRAY_TAG,
 				 MPI_COMM_WORLD, &status);
 
-		if(is_leaf(ARRAY_SIZE, proc_n)) {
+		if(is_leaf(size, ARRAY_SIZE, proc_n)) {
 			bubble_sort(size, array);
 
 			MPI_Send(array, size,
