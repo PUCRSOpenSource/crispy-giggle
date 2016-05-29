@@ -5,6 +5,7 @@
 *.elf
 sequential
 parallel
+parallel_optimized
 
 # Precompiled Headers
 *.gch
