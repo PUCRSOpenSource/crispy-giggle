@@ -6,7 +6,7 @@
 #include "utils.h"
 #include "bubblesort.h"
 
-#define ARRAY_SIZE 100
+#define ARRAY_SIZE 40
 #define DEBUG 1
 #define SIZE_TAG 0
 #define SEND_UP_TAG 1
