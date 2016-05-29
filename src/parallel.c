@@ -49,7 +49,7 @@ main(int argc, char *argv[])
 				 MPI_INT, parent(my_rank), SEND_DOWN_TAG,
 				 MPI_COMM_WORLD, &status);
 
-		if(is_leaf(size, ARRAY_SIZE, proc_n, my_rank))
+		if(is_leaf(size, ARRAY_SIZE, proc_n))
 		{
 			bubble_sort(size, array);
 

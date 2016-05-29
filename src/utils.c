@@ -74,6 +74,10 @@ int parent(int index) {
 	return (index - 1) / 2;
 }
 
-int is_leaf(int current_size, int total_size, int number_of_process, int my_rank) {
+int is_leaf(int current_size, int total_size, int number_of_process) {
 	return current_size <= total_size / ((number_of_process + 1) / 2);
+}
+
+int is_leaf3(int current_size, int total_size, int number_of_process) {
+	return current_size <= (total_size / number_of_process);
 }
