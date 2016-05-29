@@ -14,6 +14,9 @@ LADFLAGS = -env mpicc
 CC = gcc
 CFLAGS = -g -Wall -std=c99 -I$(IDIR)
 
+_DEPS = bubblesort.c utils.c
+DEPS = $(patsubst %,$(SDIR)/%,$(_DEPS))
+
 all: sequential parallel
 
 sequential: $(SDIR)/sequential.c
@@ -21,9 +24,9 @@ sequential: $(SDIR)/sequential.c
 
 parallel: $(SDIR)/parallel.c
 ifndef $(ENVLAD)
-	$(MPI) -o $@ $< $(SDIR)/bubblesort.c $(CFLAGS)
+	$(MPI) -o $@ $< $(DEPS) $(CFLAGS)
 else
-	$(LAD) $(LADFLAGS) -o $@ $< $(SDIR)/bubblesort.c $(CFLAGS)
+	$(LAD) $(LADFLAGS) -o $@ $< $(DEPS) $(CFLAGS)
 endif
 
 clean:
