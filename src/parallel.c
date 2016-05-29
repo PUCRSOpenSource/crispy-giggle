@@ -42,6 +42,40 @@ int is_leaf(int current_size, int total_size, int number_of_process) {
 	return current_size <= (total_size / (number_of_process - 1));
 }
 
+int *order(int my_rank, int array[], int size, MPI_Status status) {
+	int half_size = size / 2;
+
+	// Send size
+	MPI_Send(&half_size, 1,
+			 MPI_INT, right_child(my_rank), SIZE_TAG,
+			 MPI_COMM_WORLD);
+
+	MPI_Send(&half_size, 1,
+			 MPI_INT, left_child(my_rank), SIZE_TAG,
+			 MPI_COMM_WORLD);
+
+	// Send array
+	MPI_Send(array, half_size,
+			 MPI_INT, right_child(my_rank), ARRAY_TAG,
+			 MPI_COMM_WORLD);
+
+	MPI_Send(array + half_size, half_size,
+			 MPI_INT, left_child(my_rank), ARRAY_TAG,
+			 MPI_COMM_WORLD);
+
+	// Receive response
+	MPI_Recv(array, half_size,
+			 MPI_INT, 1, ARRAY_TAG,
+			 MPI_COMM_WORLD, &status);
+
+	MPI_Recv(array + half_size, half_size,
+			 MPI_INT, 2, ARRAY_TAG,
+			 MPI_COMM_WORLD, &status);
+
+	return interleaving(array, size);
+
+}
+
 int main(int argc, char *argv[]) {
 	int my_rank;
 	int proc_n;
@@ -54,8 +88,6 @@ int main(int argc, char *argv[]) {
 
 	if (my_rank == 0) {
 		int array[ARRAY_SIZE];
-		int half_size = ARRAY_SIZE / 2;
-
 		for (i = 0; i < ARRAY_SIZE; i++)
 			array[i] = ARRAY_SIZE - i;
 
@@ -64,34 +96,7 @@ int main(int argc, char *argv[]) {
 			printf("[%03d] ", array[i]);
 		printf("\n");
 
-		// Send size
-		MPI_Send(&half_size, 1,
-				 MPI_INT, right_child(my_rank), SIZE_TAG,
-				 MPI_COMM_WORLD);
-
-		MPI_Send(&half_size, 1,
-				 MPI_INT, left_child(my_rank), SIZE_TAG,
-				 MPI_COMM_WORLD);
-
-		// Send array
-		MPI_Send(array, ARRAY_SIZE / 2,
-				 MPI_INT, right_child(my_rank), ARRAY_TAG,
-				 MPI_COMM_WORLD);
-
-		MPI_Send(array + ARRAY_SIZE / 2, ARRAY_SIZE / 2,
-				 MPI_INT, left_child(my_rank), ARRAY_TAG,
-				 MPI_COMM_WORLD);
-
-		// Receive response
-		MPI_Recv(array, ARRAY_SIZE / 2,
-				 MPI_INT, 1, ARRAY_TAG,
-				 MPI_COMM_WORLD, &status);
-
-		MPI_Recv(array + ARRAY_SIZE / 2, ARRAY_SIZE / 2,
-				 MPI_INT, 2, ARRAY_TAG,
-				 MPI_COMM_WORLD, &status);
-
-		int *result = interleaving(array, ARRAY_SIZE);
+		int *result = order(my_rank, array, ARRAY_SIZE, status);
 
 		printf("Root process ordered:\n");
 		for (i = 0; i < ARRAY_SIZE; i++)
@@ -118,6 +123,8 @@ int main(int argc, char *argv[]) {
 			MPI_Send(array, size,
 					 MPI_INT, parent(my_rank), ARRAY_TAG,
 					 MPI_COMM_WORLD);
+		} else {
+
 		}
 	}
 
