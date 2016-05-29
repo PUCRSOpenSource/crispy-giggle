@@ -1,5 +1,7 @@
+#include <mpi.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "bubblesort.h"
 
 #define ARRAY_SIZE 40
 
@@ -22,27 +24,69 @@ int *interleaving(int array[], int size) {
 	return aux_array;
 }
 
-int main() {
-	int vetor[ARRAY_SIZE];
-	int *vetor2;
+int main(int argc, char *argv[]) {
+	int my_rank;
+	int proc_n;
+	MPI_Status status;
 	int i;
 
-	for (i = 0; i < ARRAY_SIZE / 2; i++)
-		vetor[i] = i;
-	for (i = ARRAY_SIZE / 2; i < ARRAY_SIZE; i++)
-		vetor[i] = i - ARRAY_SIZE / 2;
+	MPI_Init(&argc, &argv);
+	MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
+	MPI_Comm_size(MPI_COMM_WORLD, &proc_n);
 
-	printf("\nVetor: ");
-	for (i = 0; i < ARRAY_SIZE; i++)
-		printf("[%03d] ", vetor[i]);
+	if (my_rank == 0) {
+		int array[ARRAY_SIZE];
+		for (i = 0; i < ARRAY_SIZE; i++)
+			array[i] = ARRAY_SIZE - i;
 
-	vetor2 = interleaving(vetor, ARRAY_SIZE);
+		printf("Root process unordered:\n");
+		for (i = 0; i < ARRAY_SIZE; i++)
+			printf("[%03d] ", array[i]);
+		printf("\n");
+
+		MPI_Send(array, ARRAY_SIZE / 2,
+				 MPI_INT, 1, 1,
+				 MPI_COMM_WORLD);
+
+		MPI_Send(array + ARRAY_SIZE / 2, ARRAY_SIZE / 2,
+				 MPI_INT, 2, 1,
+				 MPI_COMM_WORLD);
+
+		MPI_Recv(array, ARRAY_SIZE / 2,
+				 MPI_INT, 1, MPI_ANY_TAG,
+				 MPI_COMM_WORLD, &status);
+
+		MPI_Recv(array + ARRAY_SIZE / 2, ARRAY_SIZE / 2,
+				 MPI_INT, 2, MPI_ANY_TAG,
+				 MPI_COMM_WORLD, &status);
+
+		int *result = interleaving(array, ARRAY_SIZE);
+
+		printf("Root process ordered:\n");
+		for (i = 0; i < ARRAY_SIZE; i++)
+			printf("[%03d] ", result[i]);
+		printf("\n");
 
 
-	printf("\nVetor: ");
-	for (i = 0; i < ARRAY_SIZE; i++)
-		printf("[%03d] ", vetor2[i]);
+	} else {
+		int array[ARRAY_SIZE / 2];
+		MPI_Recv(array, ARRAY_SIZE / 2,
+				 MPI_INT, 0, MPI_ANY_TAG,
+				 MPI_COMM_WORLD, &status);
 
+		bubble_sort(ARRAY_SIZE / 2, array);
+
+		MPI_Send(array, ARRAY_SIZE / 2,
+				 MPI_INT, 0, 1,
+				 MPI_COMM_WORLD);
+
+//		printf("Leaf process:\n");
+//		for (i = 0; i < ARRAY_SIZE / 2; i++)
+//			printf("[%03d] ", array[i]);
+//		printf("\n");
+	}
+
+	MPI_Finalize();
 	return 0;
 }
 
