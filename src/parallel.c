@@ -4,6 +4,8 @@
 #include "bubblesort.h"
 
 #define ARRAY_SIZE 40
+#define SIZE_TAG 0
+#define ARRAY_TAG 1
 
 int *interleaving(int array[], int size) {
 	int *aux_array;
@@ -60,29 +62,29 @@ int main(int argc, char *argv[]) {
 
 		// Send size
 		MPI_Send(&half_size, 1,
-				 MPI_INT, right_child(my_rank), 1,
+				 MPI_INT, right_child(my_rank), SIZE_TAG,
 				 MPI_COMM_WORLD);
 
 		MPI_Send(&half_size, 1,
-				 MPI_INT, left_child(my_rank), 1,
+				 MPI_INT, left_child(my_rank), SIZE_TAG,
 				 MPI_COMM_WORLD);
 
 		// Send array
 		MPI_Send(array, ARRAY_SIZE / 2,
-				 MPI_INT, right_child(my_rank), 1,
+				 MPI_INT, right_child(my_rank), ARRAY_TAG,
 				 MPI_COMM_WORLD);
 
 		MPI_Send(array + ARRAY_SIZE / 2, ARRAY_SIZE / 2,
-				 MPI_INT, left_child(my_rank), 1,
+				 MPI_INT, left_child(my_rank), ARRAY_TAG,
 				 MPI_COMM_WORLD);
 
 		// Receive response
 		MPI_Recv(array, ARRAY_SIZE / 2,
-				 MPI_INT, 1, MPI_ANY_TAG,
+				 MPI_INT, 1, ARRAY_TAG,
 				 MPI_COMM_WORLD, &status);
 
 		MPI_Recv(array + ARRAY_SIZE / 2, ARRAY_SIZE / 2,
-				 MPI_INT, 2, MPI_ANY_TAG,
+				 MPI_INT, 2, ARRAY_TAG,
 				 MPI_COMM_WORLD, &status);
 
 		int *result = interleaving(array, ARRAY_SIZE);
@@ -97,19 +99,19 @@ int main(int argc, char *argv[]) {
 		int size;
 
 		MPI_Recv(&size, 1,
-				 MPI_INT, parent(my_rank), MPI_ANY_TAG,
+				 MPI_INT, parent(my_rank), SIZE_TAG,
 				 MPI_COMM_WORLD, &status);
 
 		int *array = calloc(size, sizeof(int));
 
 		MPI_Recv(array, size,
-				 MPI_INT, parent(my_rank), MPI_ANY_TAG,
+				 MPI_INT, parent(my_rank), ARRAY_TAG,
 				 MPI_COMM_WORLD, &status);
 
 		bubble_sort(size, array);
 
 		MPI_Send(array, size,
-				 MPI_INT, parent(my_rank), 1,
+				 MPI_INT, parent(my_rank), ARRAY_TAG,
 				 MPI_COMM_WORLD);
 	}
 
