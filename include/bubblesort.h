@@ -1,6 +1,3 @@
-#ifndef BUBBLE_SORT_H
-#define BUBBLE_SORT_H
+#pragma once
 
 void bubble_sort(int size, int* array);
-
-#endif
