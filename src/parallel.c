@@ -3,7 +3,8 @@
 #include <stdlib.h>
 #include "bubblesort.h"
 
-#define ARRAY_SIZE 40
+#define ARRAY_SIZE 1000000
+#define DEBUG 1
 #define SIZE_TAG 0
 #define SEND_UP_TAG 1
 #define SEND_DOWN_TAG 2
@@ -90,19 +91,22 @@ int main(int argc, char *argv[]) {
 		for (i = 0; i < ARRAY_SIZE; i++)
 			array[i] = ARRAY_SIZE - i;
 
+		#ifdef DEBUG
 		printf("Root process unordered:\n");
 		for (i = 0; i < ARRAY_SIZE; i++)
 			printf("[%03d] ", array[i]);
 		printf("\n");
+		#endif
 
 		int *result = order(my_rank, array, ARRAY_SIZE, status);
 
+		#ifdef DEBUG
 		printf("Root process ordered:\n");
 		for (i = 0; i < ARRAY_SIZE; i++)
 			printf("[%03d] ", result[i]);
 		printf("\n");
-
-
+		#endif
+		
 	} else {
 		int size;
 
