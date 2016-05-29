@@ -24,6 +24,18 @@ int *interleaving(int array[], int size) {
 	return aux_array;
 }
 
+int left_child(int index) {
+	return 2 * index + 1;
+}
+
+int right_child(int index) {
+	return 2 * index + 2;
+}
+
+int parent(int index) {
+	return (index - 1) / 2;
+}
+
 int main(int argc, char *argv[]) {
 	int my_rank;
 	int proc_n;
@@ -36,6 +48,8 @@ int main(int argc, char *argv[]) {
 
 	if (my_rank == 0) {
 		int array[ARRAY_SIZE];
+		int half_size = ARRAY_SIZE / 2;
+
 		for (i = 0; i < ARRAY_SIZE; i++)
 			array[i] = ARRAY_SIZE - i;
 
@@ -44,14 +58,25 @@ int main(int argc, char *argv[]) {
 			printf("[%03d] ", array[i]);
 		printf("\n");
 
+		// Send size
+		MPI_Send(&half_size, 1,
+				 MPI_INT, right_child(my_rank), 1,
+				 MPI_COMM_WORLD);
+
+		MPI_Send(&half_size, 1,
+				 MPI_INT, left_child(my_rank), 1,
+				 MPI_COMM_WORLD);
+
+		// Send array
 		MPI_Send(array, ARRAY_SIZE / 2,
-				 MPI_INT, 1, 1,
+				 MPI_INT, right_child(my_rank), 1,
 				 MPI_COMM_WORLD);
 
 		MPI_Send(array + ARRAY_SIZE / 2, ARRAY_SIZE / 2,
-				 MPI_INT, 2, 1,
+				 MPI_INT, left_child(my_rank), 1,
 				 MPI_COMM_WORLD);
 
+		// Receive response
 		MPI_Recv(array, ARRAY_SIZE / 2,
 				 MPI_INT, 1, MPI_ANY_TAG,
 				 MPI_COMM_WORLD, &status);
@@ -69,21 +94,23 @@ int main(int argc, char *argv[]) {
 
 
 	} else {
-		int array[ARRAY_SIZE / 2];
-		MPI_Recv(array, ARRAY_SIZE / 2,
-				 MPI_INT, 0, MPI_ANY_TAG,
+		int size;
+
+		MPI_Recv(&size, 1,
+				 MPI_INT, parent(my_rank), MPI_ANY_TAG,
 				 MPI_COMM_WORLD, &status);
 
-		bubble_sort(ARRAY_SIZE / 2, array);
+		int *array = calloc(size, sizeof(int));
 
-		MPI_Send(array, ARRAY_SIZE / 2,
-				 MPI_INT, 0, 1,
+		MPI_Recv(array, size,
+				 MPI_INT, parent(my_rank), MPI_ANY_TAG,
+				 MPI_COMM_WORLD, &status);
+
+		bubble_sort(size, array);
+
+		MPI_Send(array, size,
+				 MPI_INT, parent(my_rank), 1,
 				 MPI_COMM_WORLD);
-
-//		printf("Leaf process:\n");
-//		for (i = 0; i < ARRAY_SIZE / 2; i++)
-//			printf("[%03d] ", array[i]);
-//		printf("\n");
 	}
 
 	MPI_Finalize();
