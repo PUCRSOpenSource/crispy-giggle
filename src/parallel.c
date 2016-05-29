@@ -37,7 +37,12 @@ int main(int argc, char *argv[]) {
 	if (my_rank == 0) {
 		int array[ARRAY_SIZE];
 		for (i = 0; i < ARRAY_SIZE; i++)
-			array[i] = i;
+			array[i] = ARRAY_SIZE - i;
+
+		printf("Root process unordered:\n");
+		for (i = 0; i < ARRAY_SIZE; i++)
+			printf("[%03d] ", array[i]);
+		printf("\n");
 
 		MPI_Send(array, ARRAY_SIZE / 2,
 				 MPI_INT, 1, 1,
@@ -46,14 +51,39 @@ int main(int argc, char *argv[]) {
 		MPI_Send(array + ARRAY_SIZE / 2, ARRAY_SIZE / 2,
 				 MPI_INT, 2, 1,
 				 MPI_COMM_WORLD);
+
+		MPI_Recv(array, ARRAY_SIZE / 2,
+				 MPI_INT, 1, MPI_ANY_TAG,
+				 MPI_COMM_WORLD, &status);
+
+		MPI_Recv(array + ARRAY_SIZE / 2, ARRAY_SIZE / 2,
+				 MPI_INT, 2, MPI_ANY_TAG,
+				 MPI_COMM_WORLD, &status);
+
+		int *result = interleaving(array, ARRAY_SIZE);
+
+		printf("Root process ordered:\n");
+		for (i = 0; i < ARRAY_SIZE; i++)
+			printf("[%03d] ", result[i]);
+		printf("\n");
+
+
 	} else {
-		int array2[ARRAY_SIZE / 2];
-		MPI_Recv(array2, ARRAY_SIZE / 2,
+		int array[ARRAY_SIZE / 2];
+		MPI_Recv(array, ARRAY_SIZE / 2,
 				 MPI_INT, 0, MPI_ANY_TAG,
 				 MPI_COMM_WORLD, &status);
 
-		for (i = 0; i < ARRAY_SIZE / 2; i++)
-			printf("[%03d] ", array2[i]);
+		bubble_sort(ARRAY_SIZE / 2, array);
+
+		MPI_Send(array, ARRAY_SIZE / 2,
+				 MPI_INT, 0, 1,
+				 MPI_COMM_WORLD);
+
+//		printf("Leaf process:\n");
+//		for (i = 0; i < ARRAY_SIZE / 2; i++)
+//			printf("[%03d] ", array[i]);
+//		printf("\n");
 	}
 
 	MPI_Finalize();
