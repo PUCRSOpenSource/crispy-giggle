@@ -116,43 +116,43 @@
 \typeout{Excerpts were taken from (Journal Style) 'esub2acm.cls'.}
 \typeout{****** Bugs/comments/suggestions  to Gerry Murray -- murray@hq.acm.org ******}
 
-\oddsidemargin 4.5pc
-\evensidemargin 4.5pc
+\oddsidemargin 2.5pc
+\evensidemargin 1.5pc
 \advance\oddsidemargin by -1in  % Correct for LaTeX gratuitousness
 \advance\evensidemargin by -1in % Correct for LaTeX gratuitousness
 \marginparwidth 0pt             % Margin pars are not allowed.
-\marginparsep 11pt              % Horizontal space between outer margin and
+\marginparsep 5pt              % Horizontal space between outer margin and
                                 % marginal note
 
                                 % Top of page:
-\topmargin 2.5pc                % Nominal distance from top of page to top of
+\topmargin 1.5pc                % Nominal distance from top of page to top of
                                 % box containing running head.
 \advance\topmargin by -1in      % Correct for LaTeX gratuitousness
 \headheight 0pt                 % Height of box containing running head.
 \headsep 0pt                    % Space between running head and text.
                                 % Bottom of page:
-\footskip 30pt                  % Distance from baseline of box containing foot
+\footskip 3pt                  % Distance from baseline of box containing foot
                                 % to baseline of last line of text.
 \@ifundefined{footheight}{\newdimen\footheight}{}% this is for LaTeX2e
-\footheight 12pt                % Height of box containing running foot.
+\footheight 1pt                % Height of box containing running foot.
 
 
 %% Must redefine the top margin so there's room for headers and
 %% page numbers if you are using the preprint option. Footers
 %% are OK as is. Olin.
-\advance\topmargin by -37pt     % Leave 37pt above text for headers
-\headheight 10pt                % Height of box containing running head.
-\headsep 25pt                   % Space between running head and text.
+\advance\topmargin by -30pt     % Leave 37pt above text for headers
+\headheight 1pt                % Height of box containing running head.
+\headsep 2pt                   % Space between running head and text.
 
-\textheight 666pt       % 9 1/4 column height
-\textwidth 42pc         % Width of text line.
+\textheight 800pt       % 9 1/4 column height
+\textwidth 45pc         % Width of text line.
                         % For two-column mode:
-\columnsep 2pc          %    Space between columns
+\columnsep 1pc          %    Space between columns
 \columnseprule 0pt      %    Width of rule between columns.
 \hfuzz 1pt              % Allow some variation in column width, otherwise it's
                         % too hard to typeset in narrow columns.
 
-\footnotesep 5.6pt      % Height of strut placed at the beginning of every
+\footnotesep 1.6pt      % Height of strut placed at the beginning of every
                         % footnote =3D height of normal \footnotesize strut,
                         % so no extra space between footnotes.
 
@@ -221,7 +221,7 @@
 \normallineskip 2pt
 \def\baselinestretch{1}
 
-\abovedisplayskip 9pt plus2pt minus4.5pt%
+\abovedisplayskip 1pt plus2pt minus4.5pt%
 \belowdisplayskip \abovedisplayskip
 \abovedisplayshortskip  \z@ plus3pt%
 \belowdisplayshortskip  5.4pt plus3pt minus3pt%
