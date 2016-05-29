@@ -125,7 +125,7 @@
                                 % marginal note
 
                                 % Top of page:
-\topmargin 4.5pc                % Nominal distance from top of page to top of
+\topmargin 2.5pc                % Nominal distance from top of page to top of
                                 % box containing running head.
 \advance\topmargin by -1in      % Correct for LaTeX gratuitousness
 \headheight 0pt                 % Height of box containing running head.
@@ -141,7 +141,7 @@
 %% page numbers if you are using the preprint option. Footers
 %% are OK as is. Olin.
 \advance\topmargin by -37pt     % Leave 37pt above text for headers
-\headheight 12pt                % Height of box containing running head.
+\headheight 10pt                % Height of box containing running head.
 \headsep 25pt                   % Space between running head and text.
 
 \textheight 666pt       % 9 1/4 column height
@@ -704,7 +704,7 @@
     \vskip 1.5em                % Vertical space after title.
 %This should be the subtitle.
 {\subttlfnt \the\subtitletext\par}\vskip 1.25em%\fi
-    {\baselineskip 16pt\aufnt   % each author set in \12 pt Arial, in a
+    {\baselineskip 10pt\aufnt   % each author set in \12 pt Arial, in a
      \lineskip .5em             % tabular environment
      \begin{tabular}[t]{c}\@author
      \end{tabular}\par}
