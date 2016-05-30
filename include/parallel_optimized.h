@@ -13,4 +13,4 @@
 #define SEND_DOWN_TAG 2
 
 int main(int argc, char *argv[]);
-int* order(int my_rank, int array[], int size, MPI_Status status);
+int *order(int my_rank, int array[], int size, MPI_Status status, int piece_size);

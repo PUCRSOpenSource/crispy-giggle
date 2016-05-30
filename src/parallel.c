@@ -69,9 +69,11 @@ main(int argc, char *argv[])
 		}
 	}
 
-	t2 = MPI_Wtime();
+	if (my_rank == 0) {
+		t2 = MPI_Wtime();
+		printf( "Elapsed time is %f\n", t2 - t1 );
+	}
 	MPI_Finalize();
-	printf( "Elapsed time is %f\n", t2 - t1 );
 	return 0;
 }
 

@@ -13,6 +13,7 @@ main(int argc, char *argv[])
 	MPI_Init(&argc, &argv);
 	MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
 	MPI_Comm_size(MPI_COMM_WORLD, &proc_n);
+	int piece_size = ARRAY_SIZE / proc_n;
 
 	if (my_rank == 0)
 	{
@@ -27,7 +28,7 @@ main(int argc, char *argv[])
 		printf("\n");
 #endif
 
-		int *result = order(my_rank, array, ARRAY_SIZE, status);
+		int *result = order(my_rank, array, ARRAY_SIZE, status, piece_size);
 
 #ifdef DEBUG
 		printf("Root process ordered:\n");
@@ -61,24 +62,26 @@ main(int argc, char *argv[])
 		}
 		else
 		{
-			array = order(my_rank, array, size, status);
+			array = order(my_rank, array, size, status, piece_size);
 			MPI_Send(array, size,
 					 MPI_INT, parent(my_rank), SEND_UP_TAG,
 					 MPI_COMM_WORLD);
 		}
 	}
-
-	t2 = MPI_Wtime();
+	if (my_rank == 0) {
+		t2 = MPI_Wtime();
+		printf( "Elapsed time is %f\n", t2 - t1 );
+	}
 	MPI_Finalize();
-	printf( "Elapsed time is %f\n", t2 - t1 );
 
 	return 0;
 }
 
 int*
-order(int my_rank, int array[], int size, MPI_Status status)
+order(int my_rank, int array[], int size, MPI_Status status, int piece_size)
 {
-	int third_size = size / 3;
+
+	int third_size = (size - piece_size) / 2;
 	int left_size = size - 2 * third_size;
 	// Send size
 	MPI_Send(&third_size, 1,
@@ -111,5 +114,5 @@ order(int my_rank, int array[], int size, MPI_Status status)
 			 MPI_INT, right_child(my_rank), SEND_UP_TAG,
 			 MPI_COMM_WORLD, &status);
 
-	return interleaving3(array, size);
+	return interleaving3(array, size, piece_size);
 }
