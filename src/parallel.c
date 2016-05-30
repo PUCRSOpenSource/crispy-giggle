@@ -3,6 +3,9 @@
 int
 main(int argc, char *argv[])
 {
+	double t1, t2;
+	t1 = MPI_Wtime();
+
 	int my_rank;
 	int proc_n;
 	MPI_Status status;
@@ -66,7 +69,9 @@ main(int argc, char *argv[])
 		}
 	}
 
+	t2 = MPI_Wtime();
 	MPI_Finalize();
+	printf( "Elapsed time is %f\n", t2 - t1 );
 	return 0;
 }
 
