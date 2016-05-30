@@ -30,7 +30,7 @@ else
 endif
 
 parallel_optimized: $(SDIR)/parallel_optimized.c
-ifndef $(ENVLAD)
+ifndef ENVLAD
 	$(MPI) -o $@ $< $(DEPS) $(CFLAGS)
 else
 	$(LAD) $(LADFLAGS) -o $@ $< $(DEPS) $(CFLAGS)
