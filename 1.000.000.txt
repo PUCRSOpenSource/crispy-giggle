@@ -1,0 +1,8 @@
+ladrun -np 3
+Elapsed time is 502.361595
+ladrun -np 7
+Elapsed time is 92.864404
+ladrun -np 15
+Elapsed time is 22.246438
+ladrun -np 31
+Elapsed time is 10.790653
