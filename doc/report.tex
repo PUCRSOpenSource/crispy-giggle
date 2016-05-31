@@ -26,6 +26,40 @@
 
 \input{./sections/modelo-solucao.tex}
 
+\begin{table}[]
+\centering
+\caption{Algoritmo sem ordenação local}
+\label{my-label}
+\begin{tabular}{lllll}
+\textbf{Processos} & \textbf{Núcleos} & \textbf{Tempo} & \textbf{Speed-Up} & \textbf{Eficiência} \\
+1.000.000          & 3                & 1.200          & 1,0               & 0,3                 \\
+1.000.000          & 7                & 303,2          & 4,0               & 0,6                 \\
+1.000.000          & 15               & 80,7           & 14,9              & 1,0                 \\
+1.000.000          & 31               & 35,8           & 33,4              & 1,1                 \\
+100.000            & 3                & 12.1           & 1,0               & 0,3                 \\
+100.000            & 7                & 4.1            & 2,9               & 0,4                 \\
+100.000            & 15               & 1.9            & 6,4               & 0,4                 \\
+100.000            & 31               & 1.4            & 8,1               & 0,3                
+\end{tabular}
+\end{table}
+
+\begin{table}[]
+\centering
+\caption{Algoritmo com ordenação local}
+\label{my-label}
+\begin{tabular}{lllll}
+\textbf{Processos} & \textbf{Núcleos} & \textbf{Tempo} & \textbf{Speed-Up} & \textbf{Eficiência} \\
+1.000.000          & 3                & 502.361595     & 1,0               & 0,3                 \\
+1.000.000          & 7                & 92.864404      & 5,4               & 0,8                 \\
+1.000.000          & 15               & 22.246438      & 22,6              & 1,5                 \\
+1.000.000          & 31               & 10.790653      & 46,6              & 1,5                 \\
+100.000            & 3                & 5.4            & 1,0               & 0,3                 \\
+100.000            & 7                & 2.0            & 2,6               & 0,4                 \\
+100.000            & 15               & 1.4            & 3,9               & 0,3                 \\
+100.000            & 31               & 1.2            & 4,5               & 0,1                
+\end{tabular}
+\end{table}
+
 \input{./sections/analise-resultados.tex}
 
 \input{./sections/dificuldades-encontradas.tex}
