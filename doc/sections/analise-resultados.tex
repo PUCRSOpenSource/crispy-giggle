@@ -1,8 +1,29 @@
 \section{Análise dos Resultados}
 
-O tempo do processo sequencial foi de 70 minutos, e os outros tempos estão descritos nas tabelas 1 e 2 em segundos. A versão paralela do algoritmo obteve um desempenho superior a versão sequencial, desempenho que foi aumentando conforme o número de processos cresce. isso se dá porque não há dependência entre os processos, e, pela complexidade do \emph{bubblesort} de O($n^{2}$), ordenar as duas metades do vetor paralelamente faz o trabalho 4 vezes mais rápido idealmente. O desempenho só degrada quando os vetores começam a ficar muito pequenos, e o tempo de dividir o vetor, mandar as mensagens e unir de novo não compensa, pois ordenar seria mais rápido.
+O tempo do processo sequencial foi de 70 minutos, os resultados obtidos com a implementação onde o
+processamento ocorre pode ser observado nas Tabelas~\ref{table:parallel-100k}
+e~\ref{table:parallel-1M}, é possível perceber uma melhora de desempenho em relação ao sequencial, 
+isso occorre em função da complexidade do \emph{bubblesort} O$(n^2)$ pois, uma divisão ao meio 
+faz o trabalho quatro vezes mais rápido. O desempenho só degrada quando os vetores começam a ficar
+muito pequenos, e o tempo de dividir o vetor, mandar as mensagens e unir de novo não compensa, pois
+ordenar seria mais rápido.
 
-O balanceamento de carga se mostrou viável para o algoritmo, que teve um desempenho melhor na sua versão otimizada, pois o balanceamento é mais igualitário. Na versão simples a carga é dividida apenas pelas folhas da árvore, contendo $(n + 1) / 2$ processos, por a árvore de processamento se tratar de uma árvore binária cheia, devido aos números de processos de teste, mas na versão com ordenação local, todos os processos tentam manter um equilíbrio de trabalho.
+\input{./tables/parallel-100k.tex}
+
+\input{./tables/parallel-1M.tex}
+
+%e os outros tempos estão descritos nas tabelas 1 e 2 em segundos. A versão paralela do algoritmo obteve um desempenho superior a versão sequencial, desempenho que foi aumentando conforme o número de processos cresce. isso se dá porque não há dependência entre os processos, e, pela complexidade do \emph{bubblesort} de O($n^{2}$), ordenar as duas metades do vetor paralelamente faz o trabalho 4 vezes mais rápido idealmente. O desempenho só degrada quando os vetores começam a ficar muito pequenos, e o tempo de dividir o vetor, mandar as mensagens e unir de novo não compensa, pois ordenar seria mais rápido.
+
+O balanceamento de carga se mostrou viável para o algoritmo, que teve um desempenho melhor na sua
+versão otimizada, pois o balanceamento é mais igualitário. Na versão simples a carga é dividida
+apenas pelas folhas da árvore, contendo $(n + 1) / 2$ processos, por a árvore de processamento se
+tratar de uma árvore binária cheia, devido aos números de processos de teste, mas na versão com
+ordenação local, todos os processos tentam manter um equilíbrio de trabalho.
+
+\input{./tables/optimized-100k.tex}
+
+\input{./tables/optimized-1M.tex}
+
 
 No problema proposto, é possível utilizar \emph{hyper-threading} com qualidade, pois o trabalho dos processos é bem independente uns dos outros, as únicas situações em que o uso de \emph{hyper-threading} não trouxe muitos ganhos foi no caso de vetores menores, onde o problema era o número de processos, e não o \emph{hyper-threading} em si.
 
