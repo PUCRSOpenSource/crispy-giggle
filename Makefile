@@ -23,7 +23,7 @@ sequential: $(SDIR)/sequential.c
 	$(CC) -o $@ $< $(SDIR)/bubblesort.c $(CFLAGS)
 
 parallel: $(SDIR)/parallel.c
-ifndef $(ENVLAD)
+ifndef ENVLAD
 	$(MPI) -o $@ $< $(DEPS) $(CFLAGS)
 else
 	$(LAD) $(LADFLAGS) -o $@ $< $(DEPS) $(CFLAGS)
